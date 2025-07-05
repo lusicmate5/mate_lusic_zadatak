@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+httpx
+pydantic
+redis
+slowapi
+pytest
+redoc-cli

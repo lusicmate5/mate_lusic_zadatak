@@ -1,0 +1,286 @@
+# 📄 ChatGPT Prompts – TicketHub Project
+
+Ova datoteka sadrži glavne i pomoćne promptove korištene za razvoj FastAPI aplikacije **TicketHub**. Organizirana je tako da omogućuje iterativni rad s AI modelima (npr. ChatGPT) i lako nadopunjavanje projekta kroz modularne zahtjeve.
+
+---
+
+## 🧠 Glavni prompt
+
+Koristi se za pokretanje inicijalne suradnje s AI modelom:
+
+Želim izraditi projekt "TicketHub" koristeći FastAPI. To je REST middleware servis koji dohvaća i izlaže support tickete s vanjskog servisa (DummyJSON API). Vodi me kroz cijelu implementaciju korak po korak, tako da nakon svakog dijela mogu testirati i potvrditi nastavak.
+
+🎯 Ciljevi:
+
+Endpointi:
+
+/tickets (paginacija, filteri)
+
+/tickets/{id} (detalji)
+
+/tickets/search (pretraga)
+
+/stats (agregacija)
+
+Autentikacija (JWT preko DummyJSON)
+
+Napredne funkcionalnosti:
+
+Redis caching (uz fallback)
+
+Rate limiting (SlowAPI)
+
+Logging (INFO/ERROR)
+
+Health check
+
+Staticka dokumentacija (Redoc)
+
+Infra:
+
+Dockerfile + docker-compose
+
+Makefile
+
+GitHub Actions CI
+
+Kvaliteta:
+
+Pytest testovi
+
+PEP-8 stil (black, flake8)
+
+Projektna struktura: src/, tests/, ci/
+
+⚙️ Tehnički stack:
+
+Python 3.11
+
+FastAPI 0.111
+
+httpx 0.27
+
+pydantic 2.7
+
+🧪 Na kraju svakog koraka očekujem:
+
+Funkcionalan kod
+
+Kratko objašnjenje
+
+Upute za testiranje (lokalno i Docker)
+
+Validaciju za nastavak
+
+🚨 Radi iterativno.
+
+yaml
+Copy
+Edit
+
+---
+
+## 🔧 Modularni promptovi
+
+Koristi se za specifične funkcionalnosti projekta:
+
+### 🔐 Autentikacija
+
+Dodaj autentikaciju u FastAPI aplikaciju koristeći DummyJSON API.
+
+Endpoint /auth/login prima username i password
+
+DummyJSON validira korisnika
+
+JWT se generira i koristi
+
+Zaštićeni endpointi koriste Depends(get_current_user)
+
+Daj kod, objašnjenje, testove i primjer korištenja.
+
+yaml
+Copy
+Edit
+
+---
+
+### 🧊 Caching (Redis + fallback)
+
+Dodaj caching za tickete u FastAPI aplikaciji.
+
+Primarno koristi Redis (TTL 60s)
+
+Fallback ako Redis nije dostupan: in-memory TTL dict
+
+Primijeni caching na /tickets i /tickets/{id}
+
+Daj servisni sloj + testove
+
+yaml
+Copy
+Edit
+
+---
+
+### ⏳ Rate limiting (SlowAPI)
+
+Dodaj SlowAPI rate limiting.
+
+5 zahtjeva po minuti po IP
+
+Primijeni na /tickets i /tickets/search
+
+Dodaj globalni limiter + 429 error handler
+
+Daj pytest test koji simulira 6 zahtjeva
+
+yaml
+Copy
+Edit
+
+---
+
+### 📄 Logging
+
+Dodaj logging u FastAPI aplikaciju.
+
+INFO za uspješne zahtjeve
+
+ERROR za iznimke
+
+Koristi standardni logging modul
+
+Spremi konfiguraciju u core/logging.py
+
+yaml
+Copy
+Edit
+
+---
+
+### 🩺 Health check
+
+Dodaj /health endpoint koji vraća:
+{ "status": "ok", "redis": "available/unavailable" }
+
+Ako Redis nije dostupan, to jasno naznači.
+
+yaml
+Copy
+Edit
+
+---
+
+### 🐳 Docker + docker-compose
+
+Napiši:
+
+Dockerfile (multi-stage build)
+
+docker-compose.yml (api + redis)
+
+.env za konfiguraciju
+
+Makefile komande za docker build/run
+
+Expose port 8000.
+
+yaml
+Copy
+Edit
+
+---
+
+### ⚙️ CI – GitHub Actions
+
+Dodaj GitHub Actions workflow:
+
+Pokreće se na push u main ili solution/*
+
+Provodi:
+
+black
+
+flake8
+
+pytest
+
+docker build
+
+Koristi Python 3.11 + caching.
+
+yaml
+Copy
+Edit
+
+---
+
+### 🧪 Pytest testiranje
+
+Dodaj testove za:
+
+Auth: ispravan i neispravan login
+
+Tickets: paginacija, filtriranje, nepostojeći ID
+
+Rate limiting
+
+Caching (mock Redis + fallback)
+
+Koristi pytest-asyncio + httpx AsyncClient.
+
+yaml
+Copy
+Edit
+
+---
+
+### 📄 Redoc-static dokumentacija
+
+Generiraj statičku HTML dokumentaciju pomoću:
+npx redoc-cli bundle http://localhost:8000/openapi.json -o docs/redoc-static.html
+
+Dodaj make komandu make redoc-docs
+
+yaml
+Copy
+Edit
+
+---
+
+## 🧪 Prompt za evaluaciju prompta
+
+Procijeni ovaj prompt za kvalitetu, jasnoću i učinkovitost u komunikaciji s AI-jem. Daj ocjenu (0–10) za:
+
+Jasnoću cilja
+
+Detaljnost zahtjeva
+
+Kompatibilnost s AI-jevom logikom
+
+Efikasnost (output koji mogu očekivati)
+
+Zatim predloži poboljšanja.
+
+Prompt: [ovdje zalijepi prompt koji želiš evaluirati]
+
+yaml
+Copy
+Edit
+
+---
+## ℹ️ Napomena
+
+Projekt Mate_Lusic_TicketHub razvijen je kroz interakciju s ChatGPT (v4). Prompti su korišteni za:
+- tehničku asistenciju
+- otklanjanje grešaka
+- pisanje testova i CI skripti
+- generiranje Docker okruženja
+- izradu statičke dokumentacije
+
+Svi priloženi promptovi i rezultati su ručno validirani i testirani.
+
+
+**Verzija:** 1.0  
+**Autor:** Mate Lušić  
+**Projekt:** TicketHub – Stručni zadatak (AI Akademija)
