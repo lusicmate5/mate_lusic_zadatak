@@ -14,13 +14,6 @@
 - **GitHub Actions** – CI/CD
 
 ---
-### ⚙️ Konfiguracija
-
-Aplikacija koristi sljedeću varijablu okruženja:
-
-- `REDIS_HOST` – default: `localhost` (ili `redis` unutar Docker mreže)
-
-Može se definirati u `.env` datoteci ili direktno u okruženju.
 
 ## 📦 Instalacija
 
@@ -29,8 +22,8 @@ Može se definirati u `.env` datoteci ili direktno u okruženju.
 1. Kloniraj repozitorij:
 
    ```bash
-   git clone https://github.com/your-username/tickethub.git
-   cd tickethub
+   git clone https://github.com/lusicmate5/mate_lusic_zadatak.git
+   cd mate_lusic_zadatak
    ```
 
 2. Kreiraj virtualno okruženje i instaliraj ovisnosti:
@@ -53,7 +46,7 @@ Može se definirati u `.env` datoteci ili direktno u okruženju.
 docker-compose up --build
 ```
 
-Aplikacija će biti dostupna na `http://localhost:8000`.
+Aplikacija će biti dostupna na 👉 `http://localhost:8000/docs`
 
 ---
 
@@ -78,7 +71,7 @@ pytest -v
 ## 📚 Endpointi
 
 | Metoda | Ruta            | Opis                                 |
-| ------ | --------------- | ------------------------------------ |
+|--------|-----------------|--------------------------------------|
 | POST   | `/auth/login`   | Prijava korisnika                    |
 | GET    | `/tickets`      | Lista ticketa s filtrima i pretragom |
 | GET    | `/tickets/{id}` | Detalji ticketa                      |
@@ -101,12 +94,36 @@ Ako Redis nije dostupan, koristi se lokalni (in-memory) cache.
 
 ---
 
-## 🥃 Rate Limiting
+## 🦃 Rate Limiting
 
 - `POST /auth/login` → max **5 zahtjeva u 60 sekundi**
 - `GET /tickets*` → max **10 zahtjeva u 60 sekundi**
 
 Rate limiting se temelji na IP adresi (`X-Forwarded-For` header).
+
+---
+
+## 📄 Logging
+
+Logiranje je omogućeno putem Python `logging` modula:
+
+- INFO logovi za uspješne zahtjeve
+- ERROR logovi za iznimke i greške
+
+Logovi se definiraju u `src/logger.py` i integrirani su u `main.py`, `auth.py` i `services.py`.
+
+---
+
+## 🩺 Health check
+
+Endpoint: `GET /health`
+
+```json
+{
+  "status": "ok",
+  "redis": "available/unavailable"
+}
+```
 
 ---
 
@@ -116,59 +133,75 @@ Rate limiting se temelji na IP adresi (`X-Forwarded-For` header).
 - Dockerfile + `docker-compose.yml` uključuju:
   - aplikaciju
   - Redis
-🐳 Docker
+
+---
+
+## 🐳 Docker
+
 Pokreni sve servise (API + Redis) preko Docker Compose:
 
-bash
-Copy
-Edit
+```bash
 docker-compose up --build
+```
+
 Aplikacija će biti dostupna na:
 👉 http://localhost:8000/docs
 
-⚡ Windows skripte (.bat)
-Za jednostavno lokalno pokretanje na Windowsu dostupne su .bat skripte:
+---
 
-Skripta	Opis
-install.bat	Kreira virtualno okruženje i instalira sve ovisnosti iz requirements.txt
-test.bat	Pokreće testove pomoću pytest -v
-docker.bat	Pokreće aplikaciju u Dockeru (docker-compose up --build)
+## ⚡ Windows skripte (.bat)
+
+Za jednostavno lokalno pokretanje na Windowsu dostupne su `.bat` skripte:
+
+| Skripta       | Opis                                               |
+|---------------|----------------------------------------------------|
+| `install.bat` | Kreira virtualno okruženje i instalira ovisnosti   |
+| `test.bat`    | Pokreće testove pomoću `pytest -v`                 |
+| `docker.bat`  | Pokreće aplikaciju u Dockeru                       |
 
 ✅ Primjeri:
-bash
-Copy
-Edit
+
+```bash
 install.bat
 test.bat
 docker.bat
-Napomena: Skripte su prilagođene PowerShellu ili CMD-u. Ako koristiš Git Bash, preporuča se ručno pokretanje komandi.
-📘 Bonus: statička HTML dokumentacija (Redoc)
-Uz OpenAPI shemu (/openapi.json), moguće je generirati statičku HTML dokumentaciju koristeći Redoc.
+```
 
-📄 Generiranje dokumentacije
+**Napomena:** Skripte su prilagođene PowerShellu ili CMD-u. Ako koristiš Git Bash, preporuča se ručno pokretanje komandi.
+
+---
+
+## 📘 Bonus: statička HTML dokumentacija (Redoc)
+
+Uz OpenAPI shemu (`/openapi.json`), moguće je generirati statičku HTML dokumentaciju koristeći Redoc.
+
+### 📄 Generiranje dokumentacije
+
 Instaliraj alat ako već nisi:
 
-bash
-Copy
-Edit
+```bash
 npm install -g @redocly/cli
+```
+
 Preuzmi OpenAPI JSON iz aplikacije:
 
-Pokreni aplikaciju (npr. uvicorn) i otvori u pregledniku:
+👉 Pokreni aplikaciju (npr. `uvicorn`) i otvori u pregledniku:
+[http://localhost:8000/openapi.json](http://localhost:8000/openapi.json)
 
-bash
-Copy
-Edit
-http://localhost:8000/openapi.json
-Spremi sadržaj kao openapi.json u root projekta.
+Spremi sadržaj kao `openapi.json` u root projekta.
 
 Generiraj statički HTML:
 
-bash
-Copy
-Edit
+```bash
 npx @redocly/cli build-docs openapi.json -o docs/redoc-static.html
-Otvori dokumentaciju:
+```
 
-Dvaput klikni docs/redoc-static.html ili otvori u pregledniku.
+Otvaranje:
+👉 Dvaput klikni `docs/redoc-static.html` ili ga otvori u pregledniku.
+
+---
+
+🎉 Hvala na čitanju! Za dodatna pitanja ili prijedloge, slobodno me kontaktirajte.
+
+📬 Autor: Mate Lušić
 
