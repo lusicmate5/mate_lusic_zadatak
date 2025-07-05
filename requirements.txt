@@ -5,4 +5,4 @@ pydantic
 redis
 slowapi
 pytest
-redoc-cli
+
